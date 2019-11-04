@@ -1,0 +1,30 @@
+#!/bin/bash
+# /etc/init.d/fan-control
+
+### BEGIN INIT INFO
+# Provides:          sunfounder
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: ezblock reset service
+# Description:       This service is used to startup fan control service
+### END INIT INFO
+
+
+case "$1" in
+    start)
+        echo "Starting fan-control"
+        sudo fan-control-service 2>&1 1>/dev/null &
+        ;;
+    stop)
+        echo "Stopping fan-control"
+        sudo kill $(ps aux | grep 'fan-control-service' | awk '{ print $2 }')
+        ;;
+    *)
+        echo "Usage: sudo service fan-control start|stop|restart"
+        exit 1
+        ;;
+esac
+
+exit 0
